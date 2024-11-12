@@ -28,6 +28,7 @@ class vtkViewer(QWidget):
     def SetupWnd(self):
         self.SetupRenderer()
         self.SetupTrihedron()
+        self.ResetCamera()
 
     def SetupRenderer(self):
         self.renderer = vtk.vtkRenderer()
@@ -137,6 +138,76 @@ class vtkViewer(QWidget):
                 self.ShowEdges = True
 
         self.UpdateView()
+
+    def OnFrontView(self):
+        delta = 1
+        lookAt = self.camera.GetFocalPoint()
+        self.camera.SetPosition(lookAt[0], lookAt[1], lookAt[2] + delta)
+        self.camera.SetViewUp(0, 1, 0)
+
+        self.ResetCamera()
+        self.UpdateView()
+
+    def OnBackView(self):
+        delta = -1
+        lookAt = self.camera.GetFocalPoint()
+        self.camera.SetPosition(lookAt[0], lookAt[1], lookAt[2] + delta)
+        self.camera.SetViewUp(0, 1, 0)
+        
+        self.ResetCamera()
+        self.UpdateView()
+
+    def OnTopView(self):
+        delta = 1
+        lookAt = self.camera.GetFocalPoint()
+        self.camera.SetPosition(lookAt[0] , lookAt[1] + delta, lookAt[2])
+        self.camera.SetViewUp(0, 0, -delta)
+        
+        self.ResetCamera()
+        self.UpdateView()
+
+    def OnBottomView(self):
+        delta = -1
+        lookAt = self.camera.GetFocalPoint()
+        self.camera.SetPosition(lookAt[0] , lookAt[1] + delta, lookAt[2])
+        self.camera.SetViewUp(0, 0, -delta)
+        
+        self.ResetCamera()
+        self.UpdateView()
+
+    def OnLeftView(self):
+        delta = 1
+        lookAt = self.camera.GetFocalPoint()
+        self.camera.SetPosition(lookAt[0] + delta, lookAt[1], lookAt[2])
+        self.camera.SetViewUp(0, 1, 0)
+        
+        self.ResetCamera()
+        self.UpdateView()
+
+    def OnRightView(self):
+        delta = -1
+        lookAt = self.camera.GetFocalPoint()
+        self.camera.SetPosition(lookAt[0] + delta, lookAt[1], lookAt[2])
+        self.camera.SetViewUp(0, 1, 0)
+        
+        self.ResetCamera()
+        self.UpdateView()
+
+    def OnIsometricView(self):
+        delta = 1
+        lookAt = self.camera.GetFocalPoint()
+        self.camera.SetPosition(lookAt[0] + delta, lookAt[1] + delta, lookAt[2] + delta)
+        
+        self.camera.SetViewUp(0, 1, 0)
+        self.ResetCamera()
+        self.UpdateView()
+
+    def OnFitView(self):
+        self.renderer.ResetCameraClippingRange()
+        self.ResetCamera()
+        self.UpdateView()
+
+
 
 
 if __name__ == "__main__":
